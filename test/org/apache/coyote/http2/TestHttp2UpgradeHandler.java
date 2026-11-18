@@ -101,11 +101,11 @@ public class TestHttp2UpgradeHandler extends Http2TestBase {
             buildPostRequest(frameHeader, headersPayload, false, dataFrameHeader, dataFramePayload, null, stream);
             writeFrame(frameHeader, headersPayload);
 
-            // 500 response (triggered by IOException trying to read body that never arrived)
+            // 400 response (triggered by IOException trying to read body that never arrived)
             parser.readFrame(true);
             Assert.assertTrue(output.getTrace(), output.getTrace().startsWith(
                     stream + "-HeadersStart\n" +
-                    stream + "-Header-[:status]-[500]\n"));
+                    stream + "-Header-[:status]-[400]\n"));
             output.clearTrace();
 
             // reset frame
