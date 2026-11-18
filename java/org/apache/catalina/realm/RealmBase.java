@@ -1150,13 +1150,20 @@ public abstract class RealmBase extends LifecycleMBeanBase implements Realm {
      * @return the digest for the specified user
      */
     protected String getDigest(String username, String realmName) {
+        String password = getPassword(username);
+
+        // Short-cut null password case
+        if (password == null) {
+            return null;
+        }
+
         if (hasMessageDigest()) {
             // Use pre-generated digest
-            return getPassword(username);
+            return password;
         }
 
         String digestValue = username + ":" + realmName + ":"
-            + getPassword(username);
+            + password;
 
         byte[] valueBytes = null;
         try {
